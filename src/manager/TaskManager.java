@@ -1,8 +1,11 @@
+package manager;
 /*
     Основной класс, в котором прописана вся логика работы с Тасками, эпиками и сабтасками
 */
+import model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class TaskManager {
 
@@ -17,26 +20,20 @@ public class TaskManager {
     private int nextId = 1;
 
     private void updateStatus(int epicId) {
-        int countOfNew = 0;
-        int countOFDone = 0;
-        int countOfSubtask = epicMap.get(epicId).getSubTaskIds().size();
 
+        HashSet<String> statuses = new HashSet<>();
 
-        for (Integer subTaskId : epicMap.get(epicId).subTaskIds) {
+        for (Integer subTaskId : epicMap.get(epicId).getSubTaskIds()) {
             Subtask subtask = subtaskMap.get(subTaskId);
-            if (subtask.getStatus().equals(STATUS_NEW)) {
-                countOfNew++;
-            } else if (subtask.getStatus().equals(STATUS_DONE)) {
-                countOFDone++;
-            }
+            statuses.add(subtask.getStatus());
         }
 
         Epic epic = epicMap.get(epicId);
 
-        if (countOfNew == countOfSubtask) {
+        if (statuses.size() == 1 && statuses.contains(STATUS_NEW)) {
             epic.setStatus(STATUS_NEW);
             epicMap.put(epicId, epic);
-        } else if (countOFDone == countOfSubtask) {
+        } else if (statuses.size() == 1 && statuses.contains(STATUS_DONE)) {
             epic.setStatus(STATUS_DONE);
             epicMap.put(epicId, epic);
         } else {
@@ -47,8 +44,8 @@ public class TaskManager {
 
     public ArrayList<Integer> updateSubtasksInEpic(Epic epic) {
         ArrayList<Integer> lisForSubtaskIds = new ArrayList<>();
-        for (Integer subtaskID : epic.subTaskIds) {
-            Subtask subtask = subtaskMap.get(subtaskID);
+        for (Integer subtaskId : epic.getSubTaskIds()) {
+            Subtask subtask = subtaskMap.get(subtaskId);
             lisForSubtaskIds.add(subtask.getId());
         }
         epic.setSubTaskIds(lisForSubtaskIds);

@@ -1,3 +1,7 @@
+package model;
+
+import java.util.Objects;
+
 /*
     Класс для хранения методанных по Таскам
 */
@@ -44,6 +48,20 @@ public class Task {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        return hash * Objects.hash(id);
     }
 
     @Override
