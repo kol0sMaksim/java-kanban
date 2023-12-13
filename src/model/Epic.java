@@ -2,12 +2,14 @@ package model;
 /*
     Класс для хранения методанных по Эпикам
 */
+import emun.Status;
+
 import java.util.ArrayList;
 
 public class Epic extends Task{
     ArrayList<Integer> subTaskIds;
 
-    public Epic(String name, String description, int id, String status) {
+    public Epic(String name, String description, int id, Status status) {
         super(name, description, id, status);
         subTaskIds = new ArrayList<>();
     }

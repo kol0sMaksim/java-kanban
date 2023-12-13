@@ -1,4 +1,7 @@
 package model;
+
+import emun.Status;
+
 /*
     Класс для хранения методанных по Сабтаскам
 */
@@ -6,7 +9,7 @@ public class Subtask extends Task{
 
     private int epicId;
 
-    public Subtask(String name, String description,int id, int epicId, String status) {
+    public Subtask(String name, String description,int id, int epicId, Status status) {
         super(name, description, id, status);
         this.epicId = epicId;
     }
