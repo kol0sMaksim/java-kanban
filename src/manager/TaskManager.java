@@ -3,15 +3,15 @@ package manager;
     Интерфейс для объекта-менеджера
 */
 import model.*;
-import java.util.ArrayList;
+import java.util.Collection;
 
 public interface TaskManager {
 
-    ArrayList<Task> getAllTask();
+    Collection<Task> getAllTask();
 
-    ArrayList<Epic> getAllEpic();
+    Collection<Epic> getAllEpic();
 
-    ArrayList<Subtask> getAllSubtask();
+    Collection<Subtask> getAllSubtask();
 
     void clearAllTask();
 
@@ -43,6 +43,6 @@ public interface TaskManager {
 
     void deleteSubtask(int id);
 
-    ArrayList<Subtask> getEpicSubtasks(int epicId);
+    Collection<Subtask> getEpicSubtasks(int epicId);
 
 }

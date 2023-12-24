@@ -2,35 +2,34 @@ package manager;
 /*
     Класс для работы с Тасками, эпиками и сабтасками
 */
-import emun.Status;
+import enums.Status;
 import model.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
-import static emun.Status.*;
+import java.util.*;
+
+import static enums.Status.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private final HashMap<Integer, Task> taskMap;
-    private final HashMap<Integer, Epic> epicMap;
-    private final HashMap<Integer, Subtask> subtaskMap;
+    private final Map<Integer, Task> taskMap;
+    private final Map<Integer, Epic> epicMap;
+    private final Map<Integer, Subtask> subtaskMap;
 
-    private final InMemoryHistoryManager historyManager;
+    private final HistoryManager historyManager;
 
     private int nextId = 1;
 
-    public InMemoryTaskManager() {
+    public InMemoryTaskManager(HistoryManager defaultHistory) {
         this.taskMap = new HashMap<>();
         this.epicMap = new HashMap<>();
         this.subtaskMap = new HashMap<>();
-        this.historyManager = new InMemoryHistoryManager();
+        historyManager = defaultHistory;
         this.nextId = nextId;
     }
 
     private void updateStatus(int epicId) {
 
-        HashSet<Status> statuses = new HashSet<>();
+        Set<Status> statuses = new HashSet<>();
 
         for (Integer subTaskId : epicMap.get(epicId).getSubTaskIds()) {
             Subtask subtask = subtaskMap.get(subTaskId);
@@ -51,8 +50,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    public ArrayList<Integer> updateSubtasksInEpic(Epic epic) {
-        ArrayList<Integer> lisForSubtaskIds = new ArrayList<>();
+    public Collection<Integer> updateSubtasksInEpic(Epic epic) {
+        Collection<Integer> lisForSubtaskIds = new ArrayList<>();
         for (Integer subtaskId : epic.getSubTaskIds()) {
             Subtask subtask = subtaskMap.get(subtaskId);
             lisForSubtaskIds.add(subtask.getId());
@@ -138,7 +137,7 @@ public class InMemoryTaskManager implements TaskManager {
     public int create(Epic epic) {
         epic.setId(nextId);
         nextId++;
-        ArrayList<Integer> list = updateSubtasksInEpic(epic);
+        Collection<Integer> list = updateSubtasksInEpic(epic);
         epic.setSubTaskIds(list);
         epicMap.put(epic.getId(), epic);
 
@@ -150,7 +149,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtask.setId(nextId);
         nextId++;
         subtaskMap.put(subtask.getId(), subtask);
-        ArrayList<Integer> list = updateSubtasksInEpic(epicMap.get(subtask.getEpicId()));
+        Collection<Integer> list = updateSubtasksInEpic(epicMap.get(subtask.getEpicId()));
         Epic epic = epicMap.get(subtask.getEpicId());
         list.add(subtask.getId());
         epic.setSubTaskIds(list);
@@ -167,7 +166,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void update(Epic epic) {
-        ArrayList<Integer> list = epicMap.get(epic.getId()).getSubTaskIds();
+        Collection<Integer> list = epicMap.get(epic.getId()).getSubTaskIds();
         epic.setSubTaskIds(list);
         epicMap.put(epic.getId(), epic);
         updateStatus(epic.getId());
@@ -177,7 +176,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void update(Subtask subtask) {
         subtaskMap.put(subtask.getId(), subtask);
         Epic epic = epicMap.get(subtask.getEpicId());
-        ArrayList<Integer> list = epicMap.get(epic.getId()).getSubTaskIds();
+        Collection<Integer> list = epicMap.get(epic.getId()).getSubTaskIds();
         epic.setSubTaskIds(list);
         updateStatus(subtask.getEpicId());
     }

@@ -1,6 +1,6 @@
 package model;
 
-import emun.Status;
+import enums.Status;
 
 /*
     Класс для хранения методанных по Сабтаскам

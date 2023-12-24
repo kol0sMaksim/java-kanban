@@ -4,17 +4,13 @@ package manager;
     Утилитарный класс, отвечает за создание менеджера задач
 */
 
-import model.Task;
-
-import java.util.List;
-
 public class Managers {
 
-    public TaskManager getDefault() {
-        return new InMemoryTaskManager();
+    public static TaskManager getDefault() {
+        return new InMemoryTaskManager(getDefaultHistory());
     }
 
-    public static List<Task> getDefaultHistory() {
-        return new InMemoryHistoryManager().getHistory();
+    public static HistoryManager getDefaultHistory() {
+        return new InMemoryHistoryManager();
     }
 }

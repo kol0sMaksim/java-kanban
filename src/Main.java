@@ -1,7 +1,8 @@
+import manager.InMemoryHistoryManager;
 import manager.Managers;
 import manager.TaskManager;
 import model.*;
-import static emun.Status.*;
+import static enums.Status.*;
 
 public class Main {
 
@@ -11,6 +12,7 @@ public class Main {
     */
         Managers managers = new Managers();
         TaskManager taskManager = managers.getDefault();
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
 
         int task1 = taskManager.create(new Task("Первая таска", "Тест",1 , NEW));
         int task2 = taskManager.create(new Task("Вторая таска", "Тест",2 , NEW));
@@ -37,12 +39,12 @@ public class Main {
         taskManager.getEntityEpic(epic1);
         taskManager.getEntitySubtask(subtask1);
         System.out.println("Исторя просмотров: ");
-        System.out.println(managers.getDefaultHistory());
+        System.out.println(historyManager.getHistory());
         taskManager.getEntitySubtask(subtask2);
         taskManager.getEntityEpic(epic2);
         taskManager.getEntitySubtask(subtask3);
         System.out.println("Исторя просмотров: ");
-        System.out.println(managers.getDefaultHistory());
+        System.out.println(historyManager.getHistory());
 
 
         System.out.println("После апдейта получается: ");
