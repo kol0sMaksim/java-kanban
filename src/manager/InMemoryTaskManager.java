@@ -62,6 +62,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public Collection<Task> getHistory() {
+        return historyManager.getHistory();
+    }
+
+    @Override
     public ArrayList<Task> getAllTask() {
         ArrayList<Task> list = new ArrayList<>();
         for (Integer task : taskMap.keySet()) {
@@ -184,16 +189,26 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTask(int id) {
         taskMap.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
     public void deleteEpic(int id) {
+        Collection<Integer> subTaskIds = epicMap.get(id).getSubTaskIds();
+
+        for (Integer subTaskId : subTaskIds) {
+            historyManager.remove(subTaskId);
+            subtaskMap.remove(id);
+        }
+
+        historyManager.remove(id);
         epicMap.remove(id);
     }
 
     @Override
     public void deleteSubtask(int id) {
         subtaskMap.remove(id);
+        historyManager.remove(id);
     }
 
     @Override

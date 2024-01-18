@@ -45,4 +45,6 @@ public interface TaskManager {
 
     Collection<Subtask> getEpicSubtasks(int epicId);
 
+    Collection<Task> getHistory();
+
 }
