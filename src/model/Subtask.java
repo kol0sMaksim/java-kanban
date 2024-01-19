@@ -1,7 +1,6 @@
 package model;
 
 import enums.Status;
-
 /*
     Класс для хранения методанных по Сабтаскам
 */

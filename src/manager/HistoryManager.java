@@ -1,12 +1,11 @@
 package manager;
-/*
-    Интерфейс для истории просмотров
-*/
 
 import model.Task;
 
 import java.util.Collection;
-
+/*
+    Интерфейс для истории просмотров
+*/
 public interface HistoryManager {
 
     void add(Task task);

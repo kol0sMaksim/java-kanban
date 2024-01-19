@@ -1,12 +1,12 @@
 package model;
-/*
-    Класс для хранения методанных по Эпикам
-*/
+
 import enums.Status;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+/*
+    Класс для хранения методанных по Эпикам
+*/
 public class Epic extends Task{
     Collection<Integer> subTaskIds;
 

@@ -3,7 +3,6 @@ package manager;
 /*
     Утилитарный класс, отвечает за создание менеджера задач
 */
-
 public class Managers {
 
     public static TaskManager getDefault() {

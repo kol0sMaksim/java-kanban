@@ -1,14 +1,14 @@
 package manager;
-/*
-    Класс для работы с Тасками, эпиками и сабтасками
-*/
+
 import enums.Status;
 import model.*;
 
 import java.util.*;
 
 import static enums.Status.*;
-
+/*
+    Класс для работы с Тасками, эпиками и сабтасками
+*/
 public class InMemoryTaskManager implements TaskManager {
 
     private final Map<Integer, Task> taskMap;
@@ -212,8 +212,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Subtask> getEpicSubtasks(int epicId) {
-        ArrayList<Subtask> list = new ArrayList<>();
+    public Collection<Subtask> getEpicSubtasks(int epicId) {
+        Collection<Subtask> list = new ArrayList<>();
         for (Integer subTaskId : epicMap.get(epicId).getSubTaskIds()) {
             list.add(subtaskMap.get(subTaskId));
         }

@@ -1,10 +1,10 @@
 package manager;
+
+import model.*;
+import java.util.Collection;
 /*
     Интерфейс для объекта-менеджера
 */
-import model.*;
-import java.util.Collection;
-
 public interface TaskManager {
 
     Collection<Task> getAllTask();

@@ -1,12 +1,11 @@
 package manager;
-/*
-    Класс для работы с историей просмотра
-*/
 import model.Node;
 import model.Task;
 
 import java.util.*;
-
+/*
+    Класс для работы с историей просмотра
+*/
 public class InMemoryHistoryManager implements HistoryManager{
 
     private final Map<Integer, Node<Task>> nodeMap;
@@ -59,24 +58,26 @@ public class InMemoryHistoryManager implements HistoryManager{
     }
 
     private void removeNode(Node<Task> node) {
-        if (node != null) {
-            final Node<Task> next = node.getNext();
-            final Node<Task> prev = node.getPrev();
-            node.setData(null);
+        if (node == null) {
+            return;
+        }
 
-            if (head == node && tail == node) {
-                head = null;
-                tail = null;
-            } else if (head == node) {
-                head = next;
-                head.setPrev(null);
-            } else if (tail == node) {
-                tail = prev;
-                tail.setNext(null);
-            } else {
-                prev.setNext(next);
-                next.setPrev(prev);
-            }
+        final Node<Task> next = node.getNext();
+        final Node<Task> prev = node.getPrev();
+        node.setData(null);
+
+        if (head == node && tail == node) {
+            head = null;
+            tail = null;
+        } else if (head == node) {
+            head = next;
+            head.setPrev(null);
+        } else if (tail == node) {
+            tail = prev;
+            tail.setNext(null);
+        } else {
+            prev.setNext(next);
+            next.setPrev(prev);
         }
     }
 }
