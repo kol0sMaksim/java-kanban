@@ -1,6 +1,7 @@
 package model;
 
 import enums.Status;
+import enums.Type;
 
 import java.util.Objects;
 /*
@@ -11,12 +12,14 @@ public class Task {
     private String description;
     private int id;
     private Status status;
+    private Type type;
 
     public Task(String name, String description, int id, Status status) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.status = status;
+        this.type = Type.TASK;
     }
 
     public String getName() {
@@ -51,6 +54,10 @@ public class Task {
         this.status = status;
     }
 
+    public Type getType() {
+        return Type.TASK;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,11 +74,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + "'" +
-                ", status='" + getStatus() +
-                "'}";
+        return String.format("%s,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());
     }
 }

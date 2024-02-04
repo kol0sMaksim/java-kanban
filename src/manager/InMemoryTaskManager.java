@@ -11,13 +11,20 @@ import static enums.Status.*;
 */
 public class InMemoryTaskManager implements TaskManager {
 
-    private final Map<Integer, Task> taskMap;
-    private final Map<Integer, Epic> epicMap;
-    private final Map<Integer, Subtask> subtaskMap;
+    protected Map<Integer, Task> taskMap;
+    protected Map<Integer, Epic> epicMap;
+    protected Map<Integer, Subtask> subtaskMap;
 
-    private final HistoryManager historyManager;
+    protected final HistoryManager historyManager;
 
     private int nextId = 1;
+
+    public InMemoryTaskManager() {
+        this.taskMap = new HashMap<>();
+        this.epicMap = new HashMap<>();
+        this.subtaskMap = new HashMap<>();
+        historyManager = Managers.getDefaultHistory();
+    }
 
     public InMemoryTaskManager(HistoryManager defaultHistory) {
         this.taskMap = new HashMap<>();
@@ -67,8 +74,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> getAllTask() {
-        ArrayList<Task> list = new ArrayList<>();
+    public Collection<Task> getAllTask() {
+        List<Task> list = new ArrayList<>();
         for (Integer task : taskMap.keySet()) {
             list.add(taskMap.get(task));
         }
@@ -77,8 +84,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Epic> getAllEpic() {
-        ArrayList<Epic> list = new ArrayList<>();
+    public Collection<Epic> getAllEpic() {
+        List<Epic> list = new ArrayList<>();
         for (Integer epic : epicMap.keySet()) {
             list.add(epicMap.get(epic));
         }
@@ -87,8 +94,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Subtask> getAllSubtask() {
-        ArrayList<Subtask> list = new ArrayList<>();
+    public Collection<Subtask> getAllSubtask() {
+        List<Subtask> list = new ArrayList<>();
         for (Integer subtask : subtaskMap.keySet()) {
             list.add(subtaskMap.get(subtask));
         }
