@@ -1,6 +1,10 @@
+import manager.FileBackedTasksManager;
 import manager.Managers;
 import manager.TaskManager;
 import model.*;
+
+import java.io.File;
+
 import static enums.Status.*;
 
 public class Main {
@@ -9,7 +13,9 @@ public class Main {
     /*
         Далее внизу тесты для самопроверки работы приложения
     */
-        TaskManager taskManager = Managers.getDefault();
+        File path = new File("src/resource/test.csv");
+
+        TaskManager taskManager = Managers.getDefault(path);
 
         int task1 = taskManager.create(new Task("Первая таска", "Тест",1 , NEW));
         int task2 = taskManager.create(new Task("Вторая таска", "Тест",2 , NEW));
@@ -25,32 +31,14 @@ public class Main {
                 new Subtask("Сабтаска №1_3", "Тест",6, epic1, NEW)
         );
 
-        int epic2 = taskManager.create(new Epic("Второй эпик", "Тест", 7, NEW));
-
         taskManager.getEntityTask(task1);
-        taskManager.getEntityTask(task2);
-        taskManager.getEntityTask(task1);
-        System.out.println("Исторя просмотров: ");
-        System.out.println(taskManager.getHistory());
-        taskManager.getEntitySubtask(subtask3);
+        taskManager.getEntityEpic(epic1);
+        taskManager.getEntitySubtask(subtask1);
         taskManager.getEntitySubtask(subtask2);
-        taskManager.getEntitySubtask(subtask3);
         taskManager.getEntitySubtask(subtask1);
-        taskManager.getEntitySubtask(subtask1);
-        System.out.println("Исторя просмотров: ");
-        System.out.println(taskManager.getHistory());
-        taskManager.getEntityEpic(epic1);
-        taskManager.getEntityEpic(epic2);
-        taskManager.getEntityEpic(epic2);
-        taskManager.getEntityEpic(epic1);
-        System.out.println("Исторя просмотров: ");
-        System.out.println(taskManager.getHistory());
 
-        taskManager.deleteTask(task1);
-        System.out.println("После удаления 'Первая таска'");
-        System.out.println(taskManager.getHistory());
-        taskManager.deleteEpic(epic1);
-        System.out.println("После удаления 'Первый эпик'");
-        System.out.println(taskManager.getHistory());
+        TaskManager taskManager2 = FileBackedTasksManager.loadFromFile(path);
+
+        System.out.println(taskManager2.getHistory());
     }
 }

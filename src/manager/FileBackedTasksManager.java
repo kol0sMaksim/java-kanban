@@ -2,6 +2,7 @@ package manager;
 
 import enums.Status;
 import enums.Type;
+import exception.ManagerLoadException;
 import exception.ManagerSaveException;
 import model.Epic;
 import model.Subtask;
@@ -10,8 +11,6 @@ import model.Task;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-
-import static enums.Status.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
     private final File file;
@@ -47,6 +46,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     }
 
     public static FileBackedTasksManager loadFromFile(File file) {
+
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
 
         try (BufferedReader fileReader = new BufferedReader( new FileReader(file, StandardCharsets.UTF_8))) {
@@ -91,7 +91,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
             }
 
         } catch (Exception e) {
-            throw new ManagerSaveException("Не удалось прочесть файл");
+            throw new ManagerLoadException("Не удалось прочесть файл");
         }
 
         return fileBackedTasksManager;
@@ -226,34 +226,4 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         return subtasks;
     }
 
-    public static void main(String[] args) {
-
-        File path = new File("src/resource/test.csv");
-
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(path);
-
-        int task1 = fileBackedTasksManager.create(new Task("Первая таска", "Тест",1 , NEW));
-        int task2 = fileBackedTasksManager.create(new Task("Вторая таска", "Тест",2 , NEW));
-
-        int epic1 = fileBackedTasksManager.create(new Epic("Первый эпик", "Тест", 3, NEW));
-        int subtask1 = fileBackedTasksManager.create(
-                new Subtask("Сабтаска №1_1", "Тест", 4, epic1, NEW)
-        );
-        int subtask2 = fileBackedTasksManager.create(
-                new Subtask("Сабтаска №1_2", "Тест",5, epic1, NEW)
-        );
-        int subtask3 = fileBackedTasksManager.create(
-                new Subtask("Сабтаска №1_3", "Тест",6, epic1, NEW)
-        );
-
-        fileBackedTasksManager.getEntityTask(task1);
-        fileBackedTasksManager.getEntityEpic(epic1);
-        fileBackedTasksManager.getEntitySubtask(subtask1);
-        fileBackedTasksManager.getEntitySubtask(subtask2);
-        fileBackedTasksManager.getEntitySubtask(subtask1);
-        
-        FileBackedTasksManager fileBackedTasksManager2 = FileBackedTasksManager.loadFromFile(path);
-
-        System.out.println(fileBackedTasksManager2.getHistory());
-    }
 }
