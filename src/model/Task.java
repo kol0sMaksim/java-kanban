@@ -3,6 +3,8 @@ package model;
 import enums.Status;
 import enums.Type;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 /*
     Класс для хранения методанных по Таскам
@@ -13,13 +15,18 @@ public class Task {
     private int id;
     private Status status;
     private Type type;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private Duration duration;
 
-    public Task(String name, String description, int id, Status status) {
+    public Task(String name, String description, int id, Status status, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.status = status;
         this.type = Type.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public String getName() {
@@ -54,6 +61,30 @@ public class Task {
         this.status = status;
     }
 
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
     public Type getType() {
         return Type.TASK;
     }
@@ -63,7 +94,8 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id;
+        return id == task.id && this.startTime.equals(task.startTime)
+                && this.duration.equals(task.duration);
     }
 
     @Override
@@ -74,6 +106,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription());
+        return String.format("%s,%s,%s,%s,%s,%s,%s", getId(), getType(), getName(), getStatus(), getDescription(),
+                getStartTime(), getDuration());
     }
 }

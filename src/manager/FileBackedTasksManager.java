@@ -10,6 +10,8 @@ import model.Task;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
@@ -22,7 +24,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
     public void save() {
         try (Writer writer = new FileWriter(file, StandardCharsets.UTF_8)) {
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,name,status,description,startTime,duration,epic\n");
             for (Task task : getAllTask()) {
                 writer.write(task.toString());
                 writer.write("\n");
@@ -128,13 +130,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         String name = attributesFromFile[2];
         Status status = Status.valueOf(attributesFromFile[3]);
         String description = attributesFromFile[4];
+        LocalDateTime startTime;
+        if (attributesFromFile[5].equals("null")) {
+            startTime = null;
+        } else {
+            startTime = LocalDateTime.parse(attributesFromFile[5]);
+        }
+        Duration duration = Duration.parse(attributesFromFile[6]);
 
         if (type.equals(Type.TASK)) {
-            return new Task(name, description, id, status);
+            return new Task(name, description, id, status, startTime, duration);
         } else if (type.equals(Type.EPIC)) {
             return new Epic(name, description, id, status);
         } else if (type.equals(Type.SUBTASK)) {
-            return new Subtask(name, description, id, Integer.parseInt(attributesFromFile[5]), status);
+            return new Subtask(name, description, id, Integer.parseInt(attributesFromFile[7]), status, startTime, duration);
         } else {
             throw new ManagerSaveException("Ошибка вычетки из строки");
         }

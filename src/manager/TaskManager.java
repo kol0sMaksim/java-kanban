@@ -2,6 +2,8 @@ package manager;
 
 import model.*;
 import java.util.Collection;
+import java.util.List;
+
 /*
     Интерфейс для объекта-менеджера
 */
@@ -47,4 +49,5 @@ public interface TaskManager {
 
     Collection<Task> getHistory();
 
+    List<Task> getPrioritizedTasks();
 }
