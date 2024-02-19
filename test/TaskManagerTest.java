@@ -242,20 +242,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void checkRequestForNotExistTask() {
-        assertThrows(
-                NullPointerException.class,
-                () -> taskManager.getEntityTask(10) ,
-                "Происходит обработка несуществующей задачи");
-
-        assertThrows(
-                NullPointerException.class,
-                () -> taskManager.getEntityEpic(20) ,
-                "Происходит обработка несуществующего эпика");
-
-        assertThrows(
-                NullPointerException.class,
-                () -> taskManager.getEntitySubtask(40) ,
-                "Происходит обработка несуществующей подзадачи");
+        assertNull(taskManager.getEntityTask(10), "Происходит обработка несуществующей задачи");
+        assertNull(taskManager.getEntityEpic(20), "Происходит обработка несуществующего эпика");
+        assertNull(taskManager.getEntitySubtask(30), "Происходит обработка несуществующей подзадачи");
     }
 
     @Test

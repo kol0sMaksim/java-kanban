@@ -23,7 +23,6 @@ public class InMemoryTaskManager implements TaskManager {
     final protected Set<Task> prioritizedTasks;
 
     protected final HistoryManager historyManager;
-    StartTimeComparator startTimeComparator = new StartTimeComparator();
 
     private int nextId = 1;
 
@@ -32,7 +31,7 @@ public class InMemoryTaskManager implements TaskManager {
         this.epicMap = new HashMap<>();
         this.subtaskMap = new HashMap<>();
         historyManager = Managers.getDefaultHistory();
-        prioritizedTasks = new TreeSet<>(startTimeComparator);
+        prioritizedTasks = new TreeSet<>(new StartTimeComparator());
     }
 
     public InMemoryTaskManager(HistoryManager defaultHistory) {
@@ -41,7 +40,7 @@ public class InMemoryTaskManager implements TaskManager {
         this.subtaskMap = new HashMap<>();
         historyManager = defaultHistory;
         this.nextId = nextId;
-        prioritizedTasks = new TreeSet<>(startTimeComparator);
+        prioritizedTasks = new TreeSet<>(new StartTimeComparator());
     }
 
     private void updateStatus(int epicId) {
@@ -110,7 +109,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setDuration(duration);
     }
 
-    protected void checkValidation() {
+    protected void validate() {
         final List<Task> prioritizedTask = getPrioritizedTasks()
                 .stream()
                 .filter(Task -> Task.getStartTime() != null)
@@ -201,7 +200,7 @@ public class InMemoryTaskManager implements TaskManager {
         nextId++;
         taskMap.put(task.getId(), task);
         prioritizedTasks.add(task);
-        checkValidation();
+        validate();
 
         return task.getId();
     }
@@ -230,7 +229,7 @@ public class InMemoryTaskManager implements TaskManager {
         updateStatus(subtask.getEpicId());
         updateTime(subtask.getEpicId());
         prioritizedTasks.add(subtask);
-        checkValidation();
+        validate();
 
         return subtask.getId();
     }
@@ -238,7 +237,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void update(Task task) {
         taskMap.put(task.getId(), task);
-        checkValidation();
+        validate();
 
     }
 
@@ -259,7 +258,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setSubTaskIds(list);
         updateStatus(subtask.getEpicId());
         updateTime(epic.getId());
-        checkValidation();
+        validate();
     }
 
     @Override

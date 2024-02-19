@@ -1,2 +1,10 @@
 id,type,name,status,description,startTime,duration,epic
+1,TASK,Первая таска,NEW,Тест,2024-02-19T20:36:45.097601300,PT10M
+2,TASK,Вторая таска,NEW,Тест,2024-02-21T10:00,PT10M
+3,TASK,Вторая таска,NEW,Тест,null,PT3H20M
+4,EPIC,Первый эпик,NEW,Тест,2024-02-21T11:00,PT2H10M
+5,SUBTASK,Сабтаска №1_1,NEW,Тест,2024-02-21T11:00,PT10M,4
+6,SUBTASK,Сабтаска №1_2,NEW,Тест,2024-02-21T12:00,PT10M,4
+7,SUBTASK,Сабтаска №1_3,NEW,Тест,2024-02-21T13:00,PT10M,4
 
+1,4,6,5,
