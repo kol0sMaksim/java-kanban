@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class TasksHandler extends BaseHandler implements HttpHandler {
 
-    TaskManager manager;
+    private TaskManager manager;
 
     public TasksHandler(TaskManager manager) {
         this.manager = manager;

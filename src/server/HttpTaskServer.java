@@ -11,7 +11,7 @@ public class HttpTaskServer {
 
     private static final int PORT = 8080;
     private final HttpServer httpServer;
-    private static TaskManager taskManager;
+    private final TaskManager taskManager;
 
     public HttpTaskServer(TaskManager taskManager) {
 
@@ -38,8 +38,5 @@ public class HttpTaskServer {
     public void stop() {
         httpServer.stop(0);
         System.out.println("Остановили сервер на порту " + PORT);
-    }
-
-    public static void main(String[] args) throws IOException {
     }
 }

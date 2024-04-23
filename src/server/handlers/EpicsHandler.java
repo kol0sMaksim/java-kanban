@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 public class EpicsHandler extends BaseHandler implements HttpHandler {
 
-    TaskManager manager;
+    private TaskManager manager;
 
     public EpicsHandler(TaskManager manager) {
         this.manager = manager;

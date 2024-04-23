@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class HistoryHandler extends BaseHandler implements HttpHandler {
 
-    TaskManager manager;
+    private TaskManager manager;
 
     public HistoryHandler(TaskManager manager) {
         this.manager = manager;

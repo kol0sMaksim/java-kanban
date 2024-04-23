@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class PrioritizedHandler extends BaseHandler implements HttpHandler {
 
-    TaskManager manager;
+    private TaskManager manager;
 
     public PrioritizedHandler(TaskManager manager) {
         this.manager = manager;

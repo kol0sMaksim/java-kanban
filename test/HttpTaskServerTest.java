@@ -26,30 +26,40 @@ public class HttpTaskServerTest {
 
     private TaskManager managers;
     private HttpTaskServer httpTaskServer;
-    private final HttpClient client = HttpClient.newHttpClient();
-    private final HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+    private HttpClient client;
+    private HttpResponse.BodyHandler<String> handler;
 
-    Task task1 = new Task("Task1", "For Task1", 1, NEW,
-            LocalDateTime.of(2024, Month.FEBRUARY, 15, 18, 30), Duration.ofMinutes(30)
-    );
-    Task task2 = new Task("Task2", "For Task2", 2, NEW,
-            LocalDateTime.of(2024, Month.FEBRUARY, 15, 15, 30), Duration.ofMinutes(30)
-    );
-
-    Epic epic1 = new Epic("Epic1", "For Epic1",4, NEW);
-    Epic epic2 = new Epic("Epic2", "For Epic2",5, NEW);
-
-    Subtask subtask1 = new Subtask("Subtask1", "For Subtask1",7,1, NEW,
-            LocalDateTime.of(2024, Month.FEBRUARY, 13, 14, 30), Duration.ofMinutes(30)
-    );
-
-    Subtask subtask2 = new Subtask("Subtask2", "For Subtask2",8,1, NEW,
-            LocalDateTime.of(2024, Month.FEBRUARY, 13, 14, 30), Duration.ofMinutes(30)
-    );
+    private Task task1;
+    private Task task2;
+    private Epic epic1;
+    private Epic epic2;
+    private Subtask subtask1;
+    private Subtask subtask2;
 
     @BeforeEach
     public void startServer() throws IOException {
         managers = Managers.getDefault();
+        client = HttpClient.newHttpClient();
+        handler = HttpResponse.BodyHandlers.ofString();
+
+        task1 = new Task("Task1", "For Task1", 1, NEW,
+                LocalDateTime.of(2024, Month.FEBRUARY, 15, 18, 30), Duration.ofMinutes(30)
+        );
+        task2 = new Task("Task2", "For Task2", 2, NEW,
+                LocalDateTime.of(2024, Month.FEBRUARY, 15, 15, 30), Duration.ofMinutes(30)
+        );
+
+        epic1 = new Epic("Epic1", "For Epic1", 4, NEW);
+        epic2 = new Epic("Epic2", "For Epic2", 5, NEW);
+
+        subtask1 = new Subtask("Subtask1", "For Subtask1", 7, 1, NEW,
+                LocalDateTime.of(2024, Month.FEBRUARY, 13, 14, 30), Duration.ofMinutes(30)
+        );
+
+        subtask2 = new Subtask("Subtask2", "For Subtask2", 8, 1, NEW,
+                LocalDateTime.of(2024, Month.FEBRUARY, 13, 14, 30), Duration.ofMinutes(30)
+        );
+
         httpTaskServer = new HttpTaskServer(managers);
         httpTaskServer.start();
     }
@@ -80,7 +90,7 @@ public class HttpTaskServerTest {
         Task[] tasksFromJson = TaskGson.GSON.fromJson(jsonObject, Task[].class);
 
         assertEquals(200, response.statusCode());
-        assertArrayEquals(new Task[] {task1, task2}, tasksFromJson);
+        assertArrayEquals(new Task[]{task1, task2}, tasksFromJson);
     }
 
     @Test
@@ -107,10 +117,12 @@ public class HttpTaskServerTest {
         String descriptionTask = jsonObject.get("description").getAsString();
         String statusTask = jsonObject.get("status").getAsString();
 
-        assertEquals(task1.getId(), idTask);
-        assertEquals(task1.getName(), nameTask);
-        assertEquals(task1.getDescription(), descriptionTask);
-        assertEquals(task1.getStatus().toString(), statusTask);
+        assertAll("Должен вернуть метоинформацию о задаче",
+                () -> assertEquals(task1.getId(), idTask),
+                () -> assertEquals(task1.getName(), nameTask),
+                () -> assertEquals(task1.getDescription(), descriptionTask),
+                () -> assertEquals(task1.getStatus().toString(), statusTask)
+        );
     }
 
     @Test
@@ -167,7 +179,7 @@ public class HttpTaskServerTest {
         Subtask[] subtasksFromJson = TaskGson.GSON.fromJson(jsonObject, Subtask[].class);
 
         assertEquals(200, response.statusCode());
-        assertArrayEquals(new Subtask[] {subtask1, subtask2}, subtasksFromJson);
+        assertArrayEquals(new Subtask[]{subtask1, subtask2}, subtasksFromJson);
     }
 
     @Test
@@ -213,11 +225,13 @@ public class HttpTaskServerTest {
         String typeTask = jsonObject.get("type").getAsString();
         String statusTask = jsonObject.get("status").getAsString();
 
-        assertEquals(subtask1.getId(), idTask);
-        assertEquals(subtask1.getName(), nameTask);
-        assertEquals(subtask1.getDescription(), descriptionTask);
-        assertEquals(subtask1.getType().toString(), typeTask);
-        assertEquals(subtask1.getStatus().toString(), statusTask);
+        assertAll("Должен вернуть метоинформацию о подзадаче",
+                () -> assertEquals(subtask1.getId(), idTask),
+                () -> assertEquals(subtask1.getName(), nameTask),
+                () -> assertEquals(subtask1.getDescription(), descriptionTask),
+                () -> assertEquals(subtask1.getType().toString(), typeTask),
+                () -> assertEquals(subtask1.getStatus().toString(), statusTask)
+        );
     }
 
     @Test
@@ -287,11 +301,13 @@ public class HttpTaskServerTest {
         String typeTask = jsonObject.get("type").getAsString();
         String statusTask = jsonObject.get("status").getAsString();
 
-        assertEquals(epic1.getId(), idTask);
-        assertEquals(epic1.getName(), nameTask);
-        assertEquals(epic1.getDescription(), descriptionTask);
-        assertEquals(epic1.getType().toString(), typeTask);
-        assertEquals(epic1.getStatus().toString(), statusTask);
+        assertAll("Должен вернуть метоинформацию об эпике",
+                () -> assertEquals(epic1.getId(), idTask),
+                () -> assertEquals(epic1.getName(), nameTask),
+                () -> assertEquals(epic1.getDescription(), descriptionTask),
+                () -> assertEquals(epic1.getType().toString(), typeTask),
+                () -> assertEquals(epic1.getStatus().toString(), statusTask)
+        );
     }
 
     @Test
