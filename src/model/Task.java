@@ -14,7 +14,7 @@ public class Task {
     private String description;
     private int id;
     private Status status;
-    private Type type;
+    private transient Type type;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Duration duration;
